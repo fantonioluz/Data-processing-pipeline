@@ -1,17 +1,16 @@
 # helm/values/minio.yaml
-# Chart: bitnami/minio
-# Sem imageRegistry override → usa Docker Hub (bitnami/minio) com suporte multi-arch (amd64 + arm64)
-global:
-  security:
-    allowInsecureImages: true
+# Chart: minio/minio (oficial) — imagem minio/minio com suporte multi-arch (amd64 + arm64)
 
-auth:
-  rootUser: admin
-  rootPassword: admin123
+rootUser: admin
+rootPassword: admin123
 
 mode: standalone
 
-defaultBuckets: "datalake"
+# Cria o bucket automaticamente na primeira inicialização
+buckets:
+  - name: datalake
+    policy: none
+    purge: false
 
 persistence:
   enabled: true
@@ -19,9 +18,12 @@ persistence:
   size: 2Gi
 
 service:
-  type: NodePort
-  nodePorts:
-    api: 30900    # mapeado no kind-cluster (hostPort 9001)
+  type: ClusterIP
+  port: "9000"
+
+consoleService:
+  type: ClusterIP
+  port: "9001"
 
 nodeSelector:
   workload: storage
