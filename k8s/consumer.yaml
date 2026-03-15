@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bronze-consumer
+  namespace: ingestion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bronze-consumer
+  template:
+    metadata:
+      labels:
+        app: bronze-consumer
+    spec:
+      containers:
+        - name: consumer
+          image: pipeline/consumer:local
+          env:
+            - name: KAFKA_BOOTSTRAP
+              value: "pipeline-kafka-kafka-bootstrap:9092"
+            - name: KAFKA_TOPIC
+              value: "raw-events"
+            - name: KAFKA_GROUP
+              value: "bronze-consumer"
+            - name: MINIO_ENDPOINT
+              value: "http://minio.storage:9000"
+            - name: MINIO_ACCESS_KEY
+              value: "admin"
+            - name: MINIO_SECRET_KEY
+              value: "admin123"
+            - name: FLUSH_SIZE
+              value: "50"
+            - name: FLUSH_INTERVAL_S
+              value: "30"

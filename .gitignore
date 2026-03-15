@@ -1,0 +1,4 @@
+.kube/
+__pycache__/
+*.pyc
+src/connect/plugins/

@@ -1,0 +1,35 @@
+# helm/values/minio.yaml
+# Chart: bitnami/minio
+# Sem imageRegistry override → usa Docker Hub (bitnami/minio) com suporte multi-arch (amd64 + arm64)
+global:
+  security:
+    allowInsecureImages: true
+
+auth:
+  rootUser: admin
+  rootPassword: admin123
+
+mode: standalone
+
+defaultBuckets: "datalake"
+
+persistence:
+  enabled: true
+  storageClass: standard   # local-path-provisioner do Kind
+  size: 2Gi
+
+service:
+  type: NodePort
+  nodePorts:
+    api: 30900    # mapeado no kind-cluster (hostPort 9001)
+
+nodeSelector:
+  workload: storage
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 500m

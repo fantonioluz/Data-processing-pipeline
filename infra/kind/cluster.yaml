@@ -1,0 +1,17 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: data-pipeline
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30900
+        hostPort: 9001      # MinIO Console
+  - role: worker            # Kafka
+    labels:
+      workload: kafka
+  - role: worker            # Spark
+    labels:
+      workload: spark
+  - role: worker            # MinIO + Postgres
+    labels:
+      workload: storage

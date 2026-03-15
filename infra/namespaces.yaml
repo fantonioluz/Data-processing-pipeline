@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingestion
+  labels:
+    pipeline/layer: ingestion
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage
+  labels:
+    pipeline/layer: storage

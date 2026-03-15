@@ -1,0 +1,15 @@
+# helm/values/strimzi.yaml
+# Chart: strimzi/strimzi-kafka-operator
+watchAnyNamespace: false
+watchNamespaces:
+  - ingestion
+
+resources:
+  limits:
+    memory: 384Mi
+    cpu: 500m
+  requests:
+    memory: 256Mi
+    cpu: 100m
+
+logLevel: INFO
