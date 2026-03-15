@@ -66,7 +66,7 @@ ui:
     echo ""
     echo "Ctrl+C para encerrar todos os port-forwards."
     echo ""
-    kubectl port-forward svc/minio-console 9090:9090 -n storage &
+    kubectl port-forward svc/minio-console 9090:9001 -n storage &
     kubectl port-forward svc/kafdrop       9002:9000 -n ingestion &
     wait
 
@@ -162,8 +162,8 @@ _namespaces:
 [private]
 _helm-repos:
     #!/usr/bin/env bash
-    helm repo add strimzi https://strimzi.io/charts/        2>/dev/null || true
-    helm repo add bitnami https://charts.bitnami.com/bitnami 2>/dev/null || true
+    helm repo add strimzi https://strimzi.io/charts/  2>/dev/null || true
+    helm repo add minio   https://charts.min.io/       2>/dev/null || true
     helm repo update
 
 [private]
@@ -177,7 +177,7 @@ _helm-install:
         --wait --timeout 5m
 
     echo "--- Instalando MinIO ---"
-    helm upgrade --install minio bitnami/minio \
+    helm upgrade --install minio minio/minio \
         --namespace storage \
         --values helm/values/minio.yaml \
         --wait --timeout 5m
